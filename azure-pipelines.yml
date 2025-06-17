@@ -73,7 +73,22 @@ stages:
                    resourceGroupName: '<YourResourceGroup>'
                    slotName: '$(slotName)'
      
-
+      #####
+      - stage: Swap_Slots
+        dependsOn: Deploy_Staging
+        jobs:
+        - job: Swap
+          pool:
+            vmImage: 'ubuntu-latest'
+          steps:
+            - task: AzureAppServiceManage@0
+              inputs:
+                azureSubscription: '$(azureSubscription)'
+                Action: 'Swap Slots'
+                WebAppName: '$(webAppName)'
+                ResourceGroupName: '<YourResourceGroup>'
+                SourceSlot: 'staging'
+                TargetSlot: 'production'
 
 
 
